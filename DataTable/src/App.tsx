@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-
+import Dropdown from "./components/Dropdown"
 const App = () => {
   const [data,setData] = useState([])
 
@@ -17,12 +17,18 @@ const App = () => {
     if (end <= data.length-5){
       setStart(end)
       setEnd(end+5)
-    } 
+    } else{
+      setStart(end)
+      setEnd(data.length)
+    }
   }
 
   const prev = () => {
-    if (start >= 5){
+    if (start >= 5 && start != 0){
       setStart(start-5)
+      setEnd(end-5)
+    }else{
+      setStart(0)
       setEnd(end-5)
     }
 
@@ -44,20 +50,23 @@ const App = () => {
           </thead>
 
           <tbody>
-          {data && data.slice(start,end).map((user,index) => (
-              <tr key = {index}>
-                <td>{user.id}</td>
-                <td>{user.username}</td>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-              </tr>
-          ))}
+            {data && data.slice(start,end).map(
+              (user:{id:number,username:string,name:string,email:string},index:number) => 
+                (
+                <tr key = {index}>
+                  <td>{user.id}</td>
+                  <td>{user.username}</td>
+                  <td>{user.name}</td>
+                  <td>{user.email}</td>
+                </tr>
+                ))
+              }
           </tbody>
           <tfoot>
             <tr>
               <td><button>Show</button></td>
               <td><button onClick={prev}>Prev</button></td>
-              <td>Page {start+1} of {data.length/5} </td>
+              <td><Dropdown end = {end} setEnd={setEnd} start={start} setStart = {setStart}/></td>
               <td><button onClick={next}>Next</button></td>
             </tr>
           </tfoot>
