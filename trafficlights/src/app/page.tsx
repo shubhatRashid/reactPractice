@@ -1,9 +1,35 @@
 'use client'
 import { Light } from "@/components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 export default function Page() {
-    const [active,setActive] = useState('green')
-    const [timer,setTimer] = useState(4000)
+    const [active,setActive] = useState('red')
+    const [timer,setTimer] = useState(0)
+    const [redtime,setRedTime] = useState(0)
+    const [yellowtime,setYellowTime] = useState(4)
+    const [greentime,setGreenTime] = useState(5)
+
+    useEffect(()=>{
+        let interval = setInterval(()=>{
+            setTimer((timer) => timer+1)
+            console.log(timer)
+            switch (timer) {
+                case yellowtime:
+                    setActive('yellow')
+                    setYellowTime(yellowtime+8)
+                    break;
+                case greentime:
+                    setActive('green')
+                    setGreenTime(greentime+8)
+                    break
+                case redtime:
+                    setActive('red')
+                   setRedTime(redtime+8)
+                    break;
+            }
+        },1000)
+        return () => clearInterval(interval)
+    })
+
     return (
         <div className="flex flex-col gap-10">
             <div className="flex bg-black gap-5 p-5 rounded-xl">
