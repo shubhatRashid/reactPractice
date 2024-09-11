@@ -4,27 +4,27 @@ import { useEffect, useState } from "react";
 export default function Page() {
     const [active,setActive] = useState('red')
     const [timer,setTimer] = useState(0)
-    const [redtime,setRedTime] = useState(0)
-    const [yellowtime,setYellowTime] = useState(4)
-    const [greentime,setGreenTime] = useState(5)
-
+    let redtime = 0
+    let yellowtime = 4
+    let greentime = 5
     useEffect(()=>{
         let interval = setInterval(()=>{
             setTimer((timer) => timer+1)
-            console.log(timer)
+
             switch (timer) {
                 case yellowtime:
                     setActive('yellow')
-                    setYellowTime(yellowtime+8)
                     break;
                 case greentime:
                     setActive('green')
-                    setGreenTime(greentime+8)
                     break
                 case redtime:
                     setActive('red')
-                   setRedTime(redtime+8)
                     break;
+                case 8:
+                    setTimer(0)
+                    setActive('red')
+                    break
             }
         },1000)
         return () => clearInterval(interval)
@@ -43,16 +43,17 @@ export default function Page() {
                     {active === 'green' &&  <p>Go</p>}
                 </h1>
             </div>
-            <div className="flex bg-black gap-5 p-5 rounded-xl">
-                <Light color={active=='red'?'#C40C0C':''}/>
-                <Light color={active=='yellow'?'#FFC700':''}/>
-                <Light  color={active=='green'?'#399918':''}/>
+            <div className="flex bg-black gap-5 p-5 rounded-xl text-white">
+                <h2 className="font-bold text-sans text-5xl"
+                    style={{
+                        color : active === 'red' ? 'red' : active == 'green'? 'green' : 'yellow'
+                    }} >0{timer}</h2>
             </div>
             <div className="flex justify-center items-center">
                 <div className="flex flex-col bg-black gap-5 p-5 rounded-xl">
-                    <Light color={active=='red'?'#C40C0C':''}/>
-                    <Light color={active=='yellow'?'#FFC700':''}/>
-                    <Light  color={active=='green'?'#399918':''}/>
+                    <Light color={active=='red'?'#C40C0C':'white'}/>
+                    <Light color={active=='yellow'?'#FFC700':'white'}/>
+                    <Light  color={active=='green'?'#399918':'white'}/>
                 </div>
             </div>
         </div>
